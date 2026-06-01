@@ -6,9 +6,6 @@
     <test name="Test">
         <classes>
             <class name="eventhub.EventHubTests">
-                <methods>
-                    <include name="testCreateEvent"/>
-                </methods>
             </class>
         </classes>
     </test>

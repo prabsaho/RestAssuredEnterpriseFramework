@@ -31,14 +31,20 @@ public class SetupReport implements ITestListener {
     }
 
     public void onTestFailure(ITestResult result) {
-        ExtentReportManager.logFailureDetails(result.getThrowable().getMessage());
-        String stackTrace = Arrays.toString(result.getThrowable().getStackTrace());
-        stackTrace = stackTrace.replaceAll(",", "<br>");
-        String formmatedTrace = "<details>\n" +
-                "    <summary>Click Here To See Exception Logs</summary>\n" +
-                "    " + stackTrace + "\n" +
-                "</details>\n";
-        ExtentReportManager.logExceptionDetails(formmatedTrace);
+        if (SetupReport.extentTest.get() != null) {
+            String message = result.getThrowable() != null ? result.getThrowable().getMessage() : "Test failed";
+            ExtentReportManager.logFailureDetails(message);
+
+            if (result.getThrowable() != null) {
+                String stackTrace = Arrays.toString(result.getThrowable().getStackTrace());
+                stackTrace = stackTrace.replaceAll(",", "<br>");
+                String formmatedTrace = "<details>\n" +
+                        "    <summary>Click Here To See Exception Logs</summary>\n" +
+                        "    " + stackTrace + "\n" +
+                        "</details>\n";
+                ExtentReportManager.logExceptionDetails(formmatedTrace);
+            }
+        }
     }
 
 }
