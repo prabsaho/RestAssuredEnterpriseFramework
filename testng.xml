@@ -5,7 +5,7 @@
     </listeners>
     <test name="Test">
         <classes>
-            <class name="eventhub.EventHubTests">
+            <class name="eventhub.EventHubTestsWithScenarios">
             </class>
         </classes>
     </test>

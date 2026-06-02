@@ -1,5 +1,6 @@
 package eventhub;
 
+import eventhub.pojos.CreateEventDataPojo;
 import eventhub.pojos.EventHub;
 import io.restassured.response.Response;
 import utils.RestUtils;
@@ -15,6 +16,14 @@ public class EventHubApis {
     }
     public Response createEvent(EventHub createEventPayload, Map<String,String> headers){
         String endPoint =(String) Base.dataFromJsonFile.get("eventHubAPIEndPoint");
+        return RestUtils.performPost(endPoint, createEventPayload, headers);
+    }
+    public Response createEvent(CreateEventDataPojo createEventPayload, Map<String,String> headers){
+        String endPoint =(String) Base.dataFromJsonFile.get("eventHubAPIEndPoint");
+        return RestUtils.performPost(endPoint, createEventPayload, headers);
+    }
+    public <T> Response createEvent(T createEventPayload, Map<String,String> headers) {
+        String endPoint = (String) Base.dataFromJsonFile.get("eventHubAPIEndPoint");
         return RestUtils.performPost(endPoint, createEventPayload, headers);
     }
 }
