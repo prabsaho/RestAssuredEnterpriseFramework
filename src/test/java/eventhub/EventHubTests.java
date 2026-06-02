@@ -80,41 +80,41 @@ public class EventHubTests extends EventHubApis {
 //                AssertionUtils.assertExpectedValuesWithJsonPath(response, expectedValueMap);
 //        }
 
-        @Test(dataProvider = "createEventDataProvider",description = "take hard coded data from excel & execute set of test cases")
-        public void createEventAndVerifyResponse(EventHub eventData) {
-            Map<String,String> headers=Map.of("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExNTQ4LCJlbWFpbCI6InByYWJzNDRAZ21haWwuY29tIiwiaWF0IjoxNzgwMTI4MzI1LCJleHAiOjE3ODA3MzMxMjV9.kIDWzK7fKPCYqP9_X-4MYD0X4vwELGRLX-BMgZo3pxU");
-            Response response=createEvent(eventData, headers);
-            Map<String, Object> expectedValueMap = new HashMap<>();
-                expectedValueMap.put("data.title", eventData.getTitle());
-                expectedValueMap.put("data.description", eventData.getDescription());
-                expectedValueMap.put("data.category", eventData.getCategory());
-                expectedValueMap.put("data.venue", eventData.getVenue());
-                expectedValueMap.put("data.city", eventData.getCity());
-                expectedValueMap.put("data.eventDate", eventData.getEventDate());
-                expectedValueMap.put("data.price", String.valueOf(eventData.getPrice()));
-                expectedValueMap.put("data.totalSeats", eventData.getTotalSeats());
-                expectedValueMap.put("data.imageUrl", eventData.getImageUrl());
-                AssertionUtils.assertExpectedValuesWithJsonPath(response, expectedValueMap);
-        }
-        @DataProvider(name = "createEventDataProvider")
-        public Iterator<EventHub>getCreateEventData() throws IOException {
-            List<LinkedHashMap<String, String>> excelDataAsListOfMap = ExcelUtils.getExcelDataAsListOfMap("CreateEventHubTestData", "Sheet1");
-            List<EventHub> eventHubData = new ArrayList<>();
-            for(LinkedHashMap<String,String> data : excelDataAsListOfMap) {
-                EventHub event = EventHub.builder()
-                        .title(data.get("Title"))
-                        .description(data.get("Description"))
-                        .category(data.get("Category"))
-                        .venue(data.get("Venue"))
-                        .city(data.get("City"))
-                        .eventDate(data.get("EventDate"))
-                        .price(Integer.parseInt(data.get("Price")))
-                        .totalSeats(Integer.parseInt(data.get("TotalSeats")))
-                        .imageUrl(data.get("ImageUrl"))
-                        .build();
-                eventHubData.add(event);
-            }
-            return eventHubData.iterator();
-        }
+//        @Test(dataProvider = "createEventDataProvider",description = "take hard coded data from excel & execute set of test cases")
+//        public void createEventAndVerifyResponse(EventHub eventData) {
+//            Map<String,String> headers=Map.of("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExNTQ4LCJlbWFpbCI6InByYWJzNDRAZ21haWwuY29tIiwiaWF0IjoxNzgwMTI4MzI1LCJleHAiOjE3ODA3MzMxMjV9.kIDWzK7fKPCYqP9_X-4MYD0X4vwELGRLX-BMgZo3pxU");
+//            Response response=createEvent(eventData, headers);
+//            Map<String, Object> expectedValueMap = new HashMap<>();
+//                expectedValueMap.put("data.title", eventData.getTitle());
+//                expectedValueMap.put("data.description", eventData.getDescription());
+//                expectedValueMap.put("data.category", eventData.getCategory());
+//                expectedValueMap.put("data.venue", eventData.getVenue());
+//                expectedValueMap.put("data.city", eventData.getCity());
+//                expectedValueMap.put("data.eventDate", eventData.getEventDate());
+//                expectedValueMap.put("data.price", String.valueOf(eventData.getPrice()));
+//                expectedValueMap.put("data.totalSeats", eventData.getTotalSeats());
+//                expectedValueMap.put("data.imageUrl", eventData.getImageUrl());
+//                AssertionUtils.assertExpectedValuesWithJsonPath(response, expectedValueMap);
+//        }
+//        @DataProvider(name = "createEventDataProvider")
+//        public Iterator<EventHub>getCreateEventData() throws IOException {
+//            List<LinkedHashMap<String, String>> excelDataAsListOfMap = ExcelUtils.getExcelDataAsListOfMap("CreateEventHubTestData", "Sheet1");
+//            List<EventHub> eventHubData = new ArrayList<>();
+//            for(LinkedHashMap<String,String> data : excelDataAsListOfMap) {
+//                EventHub event = EventHub.builder()
+//                        .title(data.get("Title"))
+//                        .description(data.get("Description"))
+//                        .category(data.get("Category"))
+//                        .venue(data.get("Venue"))
+//                        .city(data.get("City"))
+//                        .eventDate(data.get("EventDate"))
+//                        .price(Integer.parseInt(data.get("Price")))
+//                        .totalSeats(Integer.parseInt(data.get("TotalSeats")))
+//                        .imageUrl(data.get("ImageUrl"))
+//                        .build();
+//                eventHubData.add(event);
+//            }
+//            return eventHubData.iterator();
+//        }
 
 }

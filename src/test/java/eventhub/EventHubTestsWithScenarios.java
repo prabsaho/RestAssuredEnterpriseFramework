@@ -14,12 +14,13 @@ import java.io.IOException;
 import java.util.*;
 
 public class EventHubTestsWithScenarios extends EventHubApis{
-    @Test(dataProvider = "createEventDataProvider",description = "take hard coded data from excel & execute set of test cases")
+    @Test(dataProvider = "createEventDataProvider",description = "test event hub api for different scenarios with data driven approach using excel")
     public void createEventAndVerifyResponse(CreateEventDataPojo eventData) {
 
         ExtentTest test = SetupReport.extentReports.createTest("Test Name - " + eventData.getScenarioId(),
                 eventData.getScenarioDesc());
         SetupReport.extentTest.set(test);
+        System.out.println("Executing scenario Prabin Sahoo: " + eventData.getScenarioId() + " - " + eventData.getScenarioDesc());
         Map<String,String> headers=Map.of("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExNTQ4LCJlbWFpbCI6InByYWJzNDRAZ21haWwuY29tIiwiaWF0IjoxNzgwMTI4MzI1LCJleHAiOjE3ODA3MzMxMjV9.kIDWzK7fKPCYqP9_X-4MYD0X4vwELGRLX-BMgZo3pxU");
         Response response=createEvent(eventData, headers);
 
