@@ -4,11 +4,11 @@ import com.aventstack.extentreports.ExtentTest;
 import eventhub.pojos.CreateEventDataPojo;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reporting.SetupReport;
 import utils.AssertionUtils;
+import utils.DateUtils;
 import utils.ExcelUtils;
 import auth.AuthApis;
 
@@ -16,24 +16,27 @@ import java.io.IOException;
 import java.util.*;
 
 public class EventHubTestsWithScenarios extends EventHubApis{
-
     @Test(dataProvider = "createEventDataProvider",description = "test event hub api for different scenarios with data driven approach using excel")
-    public void createEventAndVerifyResponse(CreateEventDataPojo eventData) {
+    public void createEventAndVerifyResponse(CreateEventDataPojo eventData) throws IOException {
 
         ExtentTest test = SetupReport.extentReports.createTest("Test Name - " + eventData.getScenarioId(),
                 eventData.getScenarioDesc());
         SetupReport.extentTest.set(test);
-        System.out.println("Executing scenario Prabin Sahoo: " + eventData.getScenarioId() + " - " + eventData.getScenarioDesc());
-
+        System.out.println("Executing scenario : " + eventData.getScenarioId() + " - " + eventData.getScenarioDesc());
         String token = AuthApis.getToken();
         Map<String,String> headers=Map.of("Authorization","Bearer " + token);
         Response response=createEvent(eventData, headers);
 
         if(eventData.getExpectedStatusCode() != 201){
-            if(eventData.getScenarioId().equalsIgnoreCase("CreateEvent_InvalidDate")||eventData.getScenarioId().equalsIgnoreCase("CreateEvent_EmptyPayload")) {
+            if(eventData.getScenarioId().equalsIgnoreCase("CreateEvent_EmptyPayload")) {
                 response = createEvent(eventData, headers);
                 Assert.assertEquals(response.getStatusCode(), eventData.getExpectedStatusCode());
                 Assert.assertEquals(response.jsonPath().getString("error"), eventData.getExpectedErrorMessage());
+            }
+            if(eventData.getScenarioId().equalsIgnoreCase("CreateEvent_InvalidDate")) {
+                response = createEvent(eventData, headers);
+                Assert.assertEquals(response.getStatusCode(), eventData.getExpectedStatusCode());
+                Assert.assertEquals(response.jsonPath().getString("details[1].message"), eventData.getExpectedErrorMessage());
             }
             if(eventData.getScenarioId().equalsIgnoreCase("CreateEvent_WithoutTitle")) {
                 response = createEvent(eventData, headers);
@@ -107,7 +110,7 @@ public class EventHubTestsWithScenarios extends EventHubApis{
             createEventDataPojo.setCity(data.get("City"));
         }
         if (!data.get("EventDate").equals("NO_DATA")){
-            createEventDataPojo.setEventDate(data.get("EventDate"));
+            createEventDataPojo.setEventDate(DateUtils.getFutureDate(10));
         }
         if (!data.get("Price").equals("NO_DATA")){
             createEventDataPojo.setPrice(Integer.parseInt(data.get("Price")));
