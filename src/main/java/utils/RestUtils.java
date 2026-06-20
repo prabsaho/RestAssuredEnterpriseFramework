@@ -18,6 +18,12 @@ public class RestUtils {
                 .contentType(ContentType.JSON)
                 .body(requestPayload);
     }
+    private static RequestSpecification getRequestSpecification(String endPoint, Object requestPayload) {
+        return RestAssured.given()
+                .baseUri(endPoint)
+                .contentType(ContentType.JSON)
+                .body(requestPayload);
+    }
 
     private static void printRequestLogInReport(RequestSpecification requestSpecification) {
         QueryableRequestSpecification queryableRequestSpecification = SpecificationQuerier.query(requestSpecification);
@@ -54,6 +60,14 @@ public class RestUtils {
     }
     public static Response performPost(String endPoint, Object requestPayloadAsPojo, Map<String, String> headers) {
         RequestSpecification requestSpecification = getRequestSpecification(endPoint, requestPayloadAsPojo, headers);
+        Response response =  requestSpecification.post();
+        printRequestLogInReport(requestSpecification);
+        printResponseLogInReport(response);
+        return response;
+
+    }
+    public static Response performPost(String endPoint, Map<String, Object> requestPayload) {
+        RequestSpecification requestSpecification = getRequestSpecification(endPoint, requestPayload);
         Response response =  requestSpecification.post();
         printRequestLogInReport(requestSpecification);
         printResponseLogInReport(response);

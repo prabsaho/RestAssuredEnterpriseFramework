@@ -1,0 +1,5 @@
+{
+  "authLoginApiEndPoint":"https://api.eventhub.rahulshettyacademy.com/api/auth/login",
+  "email": "student@example.com",
+  "password": "secret123"
+}

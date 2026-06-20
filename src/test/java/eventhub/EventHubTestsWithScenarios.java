@@ -4,16 +4,19 @@ import com.aventstack.extentreports.ExtentTest;
 import eventhub.pojos.CreateEventDataPojo;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reporting.SetupReport;
 import utils.AssertionUtils;
 import utils.ExcelUtils;
+import auth.AuthApis;
 
 import java.io.IOException;
 import java.util.*;
 
 public class EventHubTestsWithScenarios extends EventHubApis{
+
     @Test(dataProvider = "createEventDataProvider",description = "test event hub api for different scenarios with data driven approach using excel")
     public void createEventAndVerifyResponse(CreateEventDataPojo eventData) {
 
@@ -21,7 +24,9 @@ public class EventHubTestsWithScenarios extends EventHubApis{
                 eventData.getScenarioDesc());
         SetupReport.extentTest.set(test);
         System.out.println("Executing scenario Prabin Sahoo: " + eventData.getScenarioId() + " - " + eventData.getScenarioDesc());
-        Map<String,String> headers=Map.of("Authorization","Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExNTQ4LCJlbWFpbCI6InByYWJzNDRAZ21haWwuY29tIiwiaWF0IjoxNzgwMTI4MzI1LCJleHAiOjE3ODA3MzMxMjV9.kIDWzK7fKPCYqP9_X-4MYD0X4vwELGRLX-BMgZo3pxU");
+
+        String token = AuthApis.getToken();
+        Map<String,String> headers=Map.of("Authorization","Bearer " + token);
         Response response=createEvent(eventData, headers);
 
         if(eventData.getExpectedStatusCode() != 201){
